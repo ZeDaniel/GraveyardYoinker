@@ -13,6 +13,11 @@ UTriggerComponent::UTriggerComponent()
 	// ...
 }
 
+void UTriggerComponent::SetMover(UMover* NewMover)
+{
+	Mover = NewMover;
+}
+
 // Called when the game starts
 void UTriggerComponent::BeginPlay()
 {
@@ -23,13 +28,32 @@ void UTriggerComponent::BeginPlay()
 void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+
+	AActor* AcceptableActor = GetAcceptableActor();
+
+	if (AcceptableActor != nullptr)
+	{
+		UPrimitiveComponent* Component = Cast<UPrimitiveComponent>(AcceptableActor->GetRootComponent());
+		if (Component != nullptr)
+		{
+			AcceptableActor->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			Component->SetSimulatePhysics(false);
+		}
+		Mover->SetShouldMove(true);
+	}
+	else
+		Mover->SetShouldMove(false);
+}
+
+AActor* UTriggerComponent::GetAcceptableActor() const
+{
 	TArray<AActor*> Actors;
 	GetOverlappingActors(Actors);
 
 	for (AActor* Actor : Actors)
 	{
-		if(Actor->ActorHasTag(AcceptableActorTag))
-			UE_LOG(LogTemp, Display, TEXT("Unlocking"));
+		if (Actor->ActorHasTag(AcceptableActorTag))
+			return Actor;
 	}
+	return nullptr;
 }

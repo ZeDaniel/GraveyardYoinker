@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
+#include "Mover.h"
 #include "TriggerComponent.generated.h"
 
 /**
@@ -18,6 +19,9 @@ public:
 	// Sets default values for this component's properties
 	UTriggerComponent();
 
+	UFUNCTION(BlueprintCallable)
+	void SetMover(UMover* Mover);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -28,4 +32,9 @@ protected:
 private:
 	UPROPERTY(EditAnywhere)
 	FName AcceptableActorTag;
+
+	UMover* Mover;
+
+	AActor* GetAcceptableActor() const;
+
 };
