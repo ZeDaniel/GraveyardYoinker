@@ -33,14 +33,14 @@ void UYoinker::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 
 	UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
-	if (PhysicsHandle == nullptr)
-		return;
-	
-	if (PhysicsHandle->GetGrabbedComponent() != nullptr)
+		
+	if (PhysicsHandle != nullptr && PhysicsHandle->GetGrabbedComponent() != nullptr)
 	{
 		FVector TargetLocation = GetComponentLocation() + GetForwardVector() * HoldDistance;
 		PhysicsHandle->SetTargetLocationAndRotation(TargetLocation, GetComponentRotation());
 	}
+	else
+		return;
 }
 
 void UYoinker::Yoink()
@@ -70,15 +70,15 @@ void UYoinker::Yoink()
 void UYoinker::Release()
 {
 	UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
-	if (PhysicsHandle == nullptr)
-		return;
 
-	if (PhysicsHandle->GetGrabbedComponent() != nullptr)
+	if (PhysicsHandle != nullptr && PhysicsHandle->GetGrabbedComponent() != nullptr)
 	{
 		PhysicsHandle->GetGrabbedComponent()->GetOwner()->Tags.Remove("Grabbed");
 		PhysicsHandle->GetGrabbedComponent()->WakeAllRigidBodies();
 		PhysicsHandle->ReleaseComponent();
 	}
+	else
+		return;
 }
 
 UPhysicsHandleComponent* UYoinker::GetPhysicsHandle() const
