@@ -33,6 +33,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	FName AcceptableActorTag;
 
+	UPROPERTY(EditAnywhere)
+	FName ActorGrabbedTag;
+
 	UMover* Mover;
 
 	AActor* GetAcceptableActor() const;

@@ -52,7 +52,7 @@ AActor* UTriggerComponent::GetAcceptableActor() const
 
 	for (AActor* Actor : Actors)
 	{
-		if (Actor->ActorHasTag(AcceptableActorTag))
+		if (Actor->ActorHasTag(AcceptableActorTag) && !(Actor->ActorHasTag(ActorGrabbedTag)))
 			return Actor;
 	}
 	return nullptr;
