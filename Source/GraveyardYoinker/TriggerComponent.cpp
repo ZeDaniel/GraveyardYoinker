@@ -34,7 +34,8 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	CheckTriggerAndMove();
+	if(Mover != nullptr)
+		CheckTriggerAndMove();
 
 }
 
