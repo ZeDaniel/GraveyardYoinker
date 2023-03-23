@@ -29,6 +29,26 @@ void UBreaker::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	if (ShouldBreak)
+		Break();
+}
+
+void UBreaker::SetShouldBreak(bool NewShouldBreak)
+{
+	ShouldBreak = NewShouldBreak;
+}
+
+void UBreaker::Break()
+{
+	AActor* Owner = GetOwner();
+
+	//Hide Actor
+	Owner->SetActorHiddenInGame(true);
+
+	//Disable collision
+	Owner->SetActorEnableCollision(false);
+
+	//Stop Actor ticking
+	Owner->SetActorTickEnabled(false);
 }
 

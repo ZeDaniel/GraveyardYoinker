@@ -24,5 +24,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	void SetShouldBreak(bool ShouldBreak);
+
+private:
+
+	void Break();
+
+	UPROPERTY(EditAnywhere)
+	bool ShouldBreak = false;
 };
