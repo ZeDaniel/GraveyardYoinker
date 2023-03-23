@@ -37,6 +37,7 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	if(Mover != nullptr)
 		CheckTriggerAndMove();
 
+	CheckTriggerAndBreak();
 }
 
 AActor* UTriggerComponent::GetAcceptableActorMover() const
