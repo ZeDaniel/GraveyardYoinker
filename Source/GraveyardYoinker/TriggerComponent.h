@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "Mover.h"
+#include "Breaker.h"
 #include "TriggerComponent.generated.h"
 
 /**
@@ -31,13 +32,15 @@ protected:
 
 private:
 	UPROPERTY(EditAnywhere)
-	FName AcceptableActorTag;
+	FName AcceptableActorMoverTag;
 
 	UPROPERTY(EditAnywhere)
 	FName ActorGrabbedTag;
 
 	UMover* Mover;
 
-	AActor* GetAcceptableActor() const;
+	AActor* GetAcceptableActorMover() const;
+
+	void CheckTriggerAndMove();
 
 };

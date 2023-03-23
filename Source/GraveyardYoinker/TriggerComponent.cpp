@@ -29,7 +29,26 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	AActor* AcceptableActor = GetAcceptableActor();
+	CheckTriggerAndMove();
+
+}
+
+AActor* UTriggerComponent::GetAcceptableActorMover() const
+{
+	TArray<AActor*> Actors;
+	GetOverlappingActors(Actors);
+
+	for (AActor* Actor : Actors)
+	{
+		if (Actor->ActorHasTag(AcceptableActorMoverTag) && !(Actor->ActorHasTag(ActorGrabbedTag)))
+			return Actor;
+	}
+	return nullptr;
+}
+
+void UTriggerComponent::CheckTriggerAndMove()
+{
+	AActor* AcceptableActor = GetAcceptableActorMover();
 
 	if (AcceptableActor != nullptr)
 	{
@@ -43,17 +62,4 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	}
 	else
 		Mover->SetShouldMove(false);
-}
-
-AActor* UTriggerComponent::GetAcceptableActor() const
-{
-	TArray<AActor*> Actors;
-	GetOverlappingActors(Actors);
-
-	for (AActor* Actor : Actors)
-	{
-		if (Actor->ActorHasTag(AcceptableActorTag) && !(Actor->ActorHasTag(ActorGrabbedTag)))
-			return Actor;
-	}
-	return nullptr;
 }
