@@ -23,6 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMover(UMover* Mover);
 
+	UFUNCTION(BlueprintCallable)
+	void AddBreaker(UBreaker* Breaker);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -35,12 +38,21 @@ private:
 	FName AcceptableActorMoverTag;
 
 	UPROPERTY(EditAnywhere)
+	FName AcceptableActorBreakerTag;
+
+	UPROPERTY(EditAnywhere)
 	FName ActorGrabbedTag;
 
 	UMover* Mover;
 
+	TArray<UBreaker*> Breakers;
+
 	AActor* GetAcceptableActorMover() const;
 
+	AActor* GetAcceptableActorBreaker() const;
+
 	void CheckTriggerAndMove();
+	
+	void CheckTriggerAndBreak();
 
 };

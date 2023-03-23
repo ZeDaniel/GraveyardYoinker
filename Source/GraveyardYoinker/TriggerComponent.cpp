@@ -18,6 +18,11 @@ void UTriggerComponent::SetMover(UMover* NewMover)
 	Mover = NewMover;
 }
 
+void UTriggerComponent::AddBreaker(UBreaker* Breaker)
+{
+	Breakers.Add(Breaker);
+}
+
 // Called when the game starts
 void UTriggerComponent::BeginPlay()
 {
@@ -46,6 +51,19 @@ AActor* UTriggerComponent::GetAcceptableActorMover() const
 	return nullptr;
 }
 
+AActor* UTriggerComponent::GetAcceptableActorBreaker() const
+{
+	TArray<AActor*> Actors;
+	GetOverlappingActors(Actors);
+
+	for (AActor* Actor : Actors)
+	{
+		if (Actor->ActorHasTag(AcceptableActorBreakerTag) && (Actor->ActorHasTag(ActorGrabbedTag)))
+			return Actor;
+	}
+	return nullptr;
+}
+
 void UTriggerComponent::CheckTriggerAndMove()
 {
 	AActor* AcceptableActor = GetAcceptableActorMover();
@@ -62,4 +80,18 @@ void UTriggerComponent::CheckTriggerAndMove()
 	}
 	else
 		Mover->SetShouldMove(false);
+}
+
+void UTriggerComponent::CheckTriggerAndBreak()
+{
+	AActor* AcceptableActor = GetAcceptableActorBreaker();
+
+	if (AcceptableActor != nullptr)
+	{
+		for (UBreaker* Breaker : Breakers)
+		{
+			Breaker->SetShouldBreak(true);
+		}
+	}
+
 }
